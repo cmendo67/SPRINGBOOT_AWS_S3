@@ -1,12 +1,14 @@
 package org.jcg.springboot.aws.s3.ctrl;
 
 import java.util.HashMap;
+
 import java.util.Map;
 
 import org.jcg.springboot.aws.s3.serv.AWSS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,18 @@ public class AWSS3Ctrl {
 
 	@Autowired
 	private AWSS3Service service;
+	
+//	@GetMapping(value= "/upload")
+//	public ResponseEntity<String> uploadFile()) {
+//		service.uploadFile(multipartFile);
+//		final String response = "[" + multipartFile.getOriginalFilename() + "] uploaded successfully.";
+//		return new ResponseEntity<>(response, HttpStatus.OK);
+//	}
+	@GetMapping("upload")
+    public String index(Model model) {
 
+        return "home is where";
+    }
 	@PostMapping(value= "/upload")
 	public ResponseEntity<String> uploadFile(@RequestPart(value= "file") final MultipartFile multipartFile) {
 		service.uploadFile(multipartFile);
