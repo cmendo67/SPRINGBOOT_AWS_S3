@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Main implementation class which serves two purpose in a spring boot application: Configuration and bootstrapping.
  * @author yatin-batra
+ * bryan was here 
  */
 @SpringBootApplication
 public class SpringbootS3tutorial {
