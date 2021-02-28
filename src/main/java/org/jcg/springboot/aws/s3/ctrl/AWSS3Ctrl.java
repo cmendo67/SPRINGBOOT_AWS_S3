@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping(value= "/s3")
@@ -31,13 +34,18 @@ public class AWSS3Ctrl {
 //		final String response = "[" + multipartFile.getOriginalFilename() + "] uploaded successfully.";
 //		return new ResponseEntity<>(response, HttpStatus.OK);
 //	}
-	@GetMapping("upload")
-    public String index(Model model) {
-
-        return "home is where";
+//	@GetMapping("upload")
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/uploadDisplay")
+    public ModelAndView welcome() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/uploadtos3");
+        return modelAndView;
     }
+	
 	@PostMapping(value= "/upload")
 	public ResponseEntity<String> uploadFile(@RequestPart(value= "file") final MultipartFile multipartFile) {
+		System.out.println("uploading....");
 		service.uploadFile(multipartFile);
 		final String response = "[" + multipartFile.getOriginalFilename() + "] uploaded successfully.";
 		return new ResponseEntity<>(response, HttpStatus.OK);

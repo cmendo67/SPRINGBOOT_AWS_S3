@@ -5,12 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div>
-<form action="/s3/upload" method="post" >
+
+<form action="/s3/upload" method="Post" enctype="multipart/form-data" >
 	<input type = "file" name = "file">
 	<input type = "submit" value ="Upload to S3">
 </form>
-</div>
+
 
 </body>
 </html>
