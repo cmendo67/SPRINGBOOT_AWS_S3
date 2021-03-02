@@ -2,6 +2,7 @@ package org.jcg.springboot.aws.s3.serv;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -93,13 +94,22 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		
 		Logger logger = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
 		try {
-			
+		      File myObj = new File("C:\\Users\\cmend\\OneDrive\\Desktop\\SPRINGBOOT_AWS_S3\\src\\main\\resources\\templates\\test.pebble");
+		      if (myObj.createNewFile()) {
+			        System.out.println("File created: " + myObj.getName());
+			      } else {
+			        System.out.println("File already exists.");
+			      }
+		      FileWriter myWriter = new FileWriter("C:\\Users\\cmend\\OneDrive\\Desktop\\SPRINGBOOT_AWS_S3\\src\\main\\resources\\templates\\test.pebble");
             System.out.println("Downloading an object");
             S3Object s3object = amazonS3.getObject(new GetObjectRequest(bucketName, keyName));
+           
+//            System.out.println(Utility.getdisplayTextValue());
             System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
             Utility.displayText(s3object.getObjectContent());
+            myWriter.write(Utility.displayText(s3object.getObjectContent()));
             logger.info("===================== Import File - Done! =====================");
-            
+            myWriter.close();
         } catch (AmazonServiceException ase) {
         	logger.info("Caught an AmazonServiceException from GET requests, rejected reasons:");
 			logger.info("Error Message:    " + ase.getMessage());

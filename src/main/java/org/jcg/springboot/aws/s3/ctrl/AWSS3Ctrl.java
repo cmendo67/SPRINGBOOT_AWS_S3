@@ -59,6 +59,7 @@ public class AWSS3Ctrl {
 			final String response = "Listed all files successfully.";
 			return response;
 		}
+	 
 	  @GetMapping(value= "/download")
 	  public Map<String, String> downloadFile(@RequestParam("file_name") String fileName)
 	    {
