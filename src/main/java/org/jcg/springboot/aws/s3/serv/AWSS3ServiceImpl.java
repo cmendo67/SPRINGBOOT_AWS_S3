@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.jcg.springboot.aws.s3.util.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.regions.Regions;
@@ -30,10 +32,12 @@ import com.amazonaws.services.s3.model.CreateBucketRequest;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.DeleteObjectsRequest;
 import com.amazonaws.services.s3.model.DeleteObjectsResult;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ListObjectsV2Result;
 import com.amazonaws.services.s3.model.ListVersionsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.s3.model.S3VersionSummary;
 import com.amazonaws.services.s3.model.VersionListing;
@@ -82,6 +86,33 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		LOGGER.info("Uploading file with name= " + uniqueFileName);
 		final PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, uniqueFileName, file);
 		amazonS3.putObject(putObjectRequest);
+	}
+	
+	@Async
+	public void downloadFile(String keyName) {
+		
+		Logger logger = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
+		try {
+			
+            System.out.println("Downloading an object");
+            S3Object s3object = amazonS3.getObject(new GetObjectRequest(bucketName, keyName));
+            System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
+            Utility.displayText(s3object.getObjectContent());
+            logger.info("===================== Import File - Done! =====================");
+            
+        } catch (AmazonServiceException ase) {
+        	logger.info("Caught an AmazonServiceException from GET requests, rejected reasons:");
+			logger.info("Error Message:    " + ase.getMessage());
+			logger.info("HTTP Status Code: " + ase.getStatusCode());
+			logger.info("AWS Error Code:   " + ase.getErrorCode());
+			logger.info("Error Type:       " + ase.getErrorType());
+			logger.info("Request ID:       " + ase.getRequestId());
+        } catch (AmazonClientException ace) {
+        	logger.info("Caught an AmazonClientException: ");
+            logger.info("Error Message: " + ace.getMessage());
+        } catch (IOException ioe) {
+        	logger.info("IOE Error Message: " + ioe.getMessage());
+		}
 	}
 		
 	@Async

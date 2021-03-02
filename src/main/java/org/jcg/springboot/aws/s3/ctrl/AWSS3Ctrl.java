@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -28,14 +27,7 @@ public class AWSS3Ctrl {
 	@Autowired
 	private AWSS3Service service;
 	
-//	@GetMapping(value= "/upload")
-//	public ResponseEntity<String> uploadFile()) {
-//		service.uploadFile(multipartFile);
-//		final String response = "[" + multipartFile.getOriginalFilename() + "] uploaded successfully.";
-//		return new ResponseEntity<>(response, HttpStatus.OK);
-//	}
-//	@GetMapping("upload")
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/uploadDisplay")
     public ModelAndView welcome() {
         ModelAndView modelAndView = new ModelAndView();
@@ -45,7 +37,6 @@ public class AWSS3Ctrl {
 	
 	@PostMapping(value= "/upload")
 	public ResponseEntity<String> uploadFile(@RequestPart(value= "file") final MultipartFile multipartFile) {
-		System.out.println("uploading....");
 		service.uploadFile(multipartFile);
 		final String response = "[" + multipartFile.getOriginalFilename() + "] uploaded successfully.";
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -68,6 +59,16 @@ public class AWSS3Ctrl {
 			final String response = "Listed all files successfully.";
 			return response;
 		}
+	  @GetMapping(value= "/download")
+	  public Map<String, String> downloadFile(@RequestParam("file_name") String fileName)
+	    {
+	        this.service.downloadFile(fileName);;
+		  	
+	        Map<String, String> response = new HashMap<>();
+	        response.put("message", "file [" + fileName + "] removing request submitted successfully.");
+
+	        return response;
+	    }
 	  
 	  @PostMapping(value= "/createBucket")
 		public Map<String,String> create_Bucket() {
