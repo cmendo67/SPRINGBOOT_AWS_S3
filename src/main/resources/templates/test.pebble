@@ -5,12 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-<form action="/s3/upload" method="Post" enctype="multipart/form-data" >
-	<input type = "file" name = "file">
-	<input type = "submit" value ="Upload to S3">
-</form>
-
-
+{{Client Fname}}
+{{Client Minit}}
+{{Client Lname}}
+{{Client Id}}
+{{Client Bdate}}
+{{Client Address}}
+{{Client Sex}}
 </body>
 </html>

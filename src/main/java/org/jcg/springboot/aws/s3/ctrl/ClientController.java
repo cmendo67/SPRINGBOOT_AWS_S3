@@ -9,6 +9,7 @@ import org.jcg.springboot.aws.s3.serv.ClientService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -26,7 +27,17 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Client getClientById(@PathVariable("id") int id){
+    public Client getClientById(@PathVariable("id") int id, Model model){
+    	Client clients = clientService.getClientById(id);
+    	
+    	model.addAttribute("Client Fname", clients.getFname());
+    	model.addAttribute("Client Minit", clients.getMinit());
+    	model.addAttribute("Client Lname", clients.getLname());
+    	model.addAttribute("Client Id", clients.getId());
+    	model.addAttribute("Client Bdate", clients.getBdate());
+    	model.addAttribute("Client Address", clients.getAddress());
+    	model.addAttribute("Client Sex", clients.getSex());
+
         return clientService.getClientById(id);
     }
 
