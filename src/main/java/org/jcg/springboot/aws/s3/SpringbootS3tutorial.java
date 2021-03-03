@@ -9,6 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.accessingdatamysql.AccessingDataMysqlApplication;
+
 /**
  * Main implementation class which serves two purpose in a spring boot application: Configuration and bootstrapping.
  * @author yatin-batra
@@ -21,5 +23,6 @@ public class SpringbootS3tutorial {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootS3tutorial.class, args);
 		LOGGER.info("SpringbootS3tutorial application started successfully.");
+		
 	}
 }

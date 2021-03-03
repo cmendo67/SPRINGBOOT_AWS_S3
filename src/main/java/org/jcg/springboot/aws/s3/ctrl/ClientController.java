@@ -3,8 +3,11 @@ package org.jcg.springboot.aws.s3.ctrl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+//-------------change this to new dir
 import com.example.accessingdatamysql.Entity.Client;
 import com.example.accessingdatamysql.Service.ClientService;
+//---------------------
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
