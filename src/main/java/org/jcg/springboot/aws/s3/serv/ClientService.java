@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-//------change to new dir
-import com.example.accessingdatamysql.Dao.ClientDao;
-import com.example.accessingdatamysql.Entity.Client;
-//------------------
+import org.jcg.springboot.aws.s3.serv.ClientDao;
+import org.jcg.springboot.aws.s3.util.Client;
 
 import java.util.Collection;
 

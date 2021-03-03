@@ -10,9 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-// change dir -------------
-import com.example.accessingdatamysql.Entity.Client;
-// ----------------
+
+import org.jcg.springboot.aws.s3.util.Client;
 
 @Repository("mysql")
 public class MySqlClientDaoImpl implements ClientDao{

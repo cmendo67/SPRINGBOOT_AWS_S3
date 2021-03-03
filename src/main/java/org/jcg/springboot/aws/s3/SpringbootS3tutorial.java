@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.accessingdatamysql.AccessingDataMysqlApplication;
+
 
 /**
  * Main implementation class which serves two purpose in a spring boot application: Configuration and bootstrapping.

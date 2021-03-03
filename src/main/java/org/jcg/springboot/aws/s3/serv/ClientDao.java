@@ -1,9 +1,8 @@
 package org.jcg.springboot.aws.s3.serv;
 import java.util.*;
 
-//change dir _____
-import com.example.accessingdatamysql.Entity.Client;
-// -----------------
+import org.jcg.springboot.aws.s3.util.Client;
+
 
 public interface ClientDao {
 	
