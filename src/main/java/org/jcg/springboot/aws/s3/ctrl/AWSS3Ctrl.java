@@ -60,13 +60,20 @@ public class AWSS3Ctrl {
 			return response;
 		}
 	 
+	  @RequestMapping(method = RequestMethod.GET, value = "/downloadDisplay")
+	    public ModelAndView welcome2() {
+	        ModelAndView modelAndView = new ModelAndView();
+	        modelAndView.setViewName("/downloads3obj");
+	        return modelAndView;
+	    }
+	  
 	  @GetMapping(value= "/download")
 	  public Map<String, String> downloadFile(@RequestParam("file_name") String fileName)
 	    {
 	        this.service.downloadFile(fileName);;
 		  	
 	        Map<String, String> response = new HashMap<>();
-	        response.put("message", "file [" + fileName + "] removing request submitted successfully.");
+	        response.put("message", "file [" + fileName + "]  downloaded successfully.");
 
 	        return response;
 	    }

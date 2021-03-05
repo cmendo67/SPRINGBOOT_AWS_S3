@@ -1,0 +1,14 @@
+<title>Insert title here</title>
+</head>
+<body>
+<div>
+<form action="/s3/download" method="get">
+  <label for="file_name">File Name:</label>
+  <input type="text" id="file_name" name="file_name"><br><br>
+  <input type="submit" value="Download from S3">
+</form>
+</div>
+
+
+</body>
+</html>

@@ -5,12 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-{{Client Fname}}
-{{Client Minit}}
-{{Client Lname}}
-{{Client Id}}
-{{Client Bdate}}
-{{Client Address}}
-{{Client Sex}}
+{{ClientFname}}
+{{ClientMinit}}
+{{ClientLname}}
+{{ClientId}}
+{{ClientBdate}}
+{{ClientAddress}}
+{{ClientSex}}
 </body>
 </html>
