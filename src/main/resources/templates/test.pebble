@@ -1,16 +1,19 @@
-<!DOCTYPE html>
+                                <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
 <body>
+testing the edit
 {{ClientFname}}
 {{ClientMinit}}
 {{ClientLname}}
 {{ClientId}}
 {{ClientBdate}}
-{{ClientAddress}}
-{{ClientSex}}
+
 </body>
 </html>
+           
+            
+            

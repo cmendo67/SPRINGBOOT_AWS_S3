@@ -1,5 +1,7 @@
 package org.jcg.springboot.aws.s3.serv;
 
+import java.io.IOException;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public interface AWSS3Service {
@@ -15,6 +17,13 @@ public interface AWSS3Service {
 	void deleteS3Bucket();
 	
 	void emptyBucket();
+	
+	//----------testing 
+	
+	void editFile(String text);
+	
+	String readFile(String fileName) throws IOException;
+	//-----------testing
 	
 
 	

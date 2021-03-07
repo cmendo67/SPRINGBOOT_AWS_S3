@@ -1,15 +1,19 @@
 package org.jcg.springboot.aws.s3.serv;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.jcg.springboot.aws.s3.util.Utility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +51,7 @@ import io.netty.util.Constant;
 
 @Service
 public class AWSS3ServiceImpl implements AWSS3Service {
+	String fileDir = "/Users/Bryan/Workspace/Senior_Design/SPRINGBOOT_AWS_S3/src/main/resources/templates/test.pebble";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
 	
@@ -83,7 +88,8 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 	}
 
 	private void uploadFileToS3Bucket(final String bucketName, final File file) {
-		final String uniqueFileName = LocalDateTime.now() + "_" + file.getName();
+//		final String uniqueFileName = LocalDateTime.now() + "_" + file.getName();
+		final String uniqueFileName = file.getName();
 		LOGGER.info("Uploading file with name= " + uniqueFileName);
 		final PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, uniqueFileName, file);
 		amazonS3.putObject(putObjectRequest);
@@ -94,13 +100,13 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		
 		Logger logger = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
 		try {
-		      File myObj = new File("C:\\Users\\cmend\\OneDrive\\Desktop\\SPRINGBOOT_AWS_S3\\src\\main\\resources\\templates\\test.pebble");
+		      File myObj = new File(fileDir);
 		      if (myObj.createNewFile()) {
 			        System.out.println("File created: " + myObj.getName());
 			      } else {
 			        System.out.println("File already exists.");
 			      }
-		      FileWriter myWriter = new FileWriter("C:\\Users\\cmend\\OneDrive\\Desktop\\SPRINGBOOT_AWS_S3\\src\\main\\resources\\templates\\test.pebble");
+		      FileWriter myWriter = new FileWriter(fileDir);
             System.out.println("Downloading an object");
             S3Object s3object = amazonS3.getObject(new GetObjectRequest(bucketName, keyName));
            
@@ -124,6 +130,54 @@ public class AWSS3ServiceImpl implements AWSS3Service {
         	logger.info("IOE Error Message: " + ioe.getMessage());
 		}
 	}
+	
+	//-------------------------------------------testing method
+	@Async
+	public String readFile(String fileName) throws IOException {
+		Logger logger = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
+		
+			File myObj = new File(fileDir);
+			InputStream targetStream = new FileInputStream(myObj);
+			return Utility.displayText(targetStream);
+
+		
+	}
+	@Async
+	public void editFile(String text) {
+		Logger logger = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
+		try {
+		      
+		      FileWriter myWriter = new FileWriter(fileDir);
+		      String fileName = "test.pebble"; //---- change this get the temp name from filedir
+		      myWriter.write(text);
+            logger.info("===================== rewriting File - Done! =====================");
+            myWriter.close();
+            
+            final File myObj = new File(fileDir);
+            File newFile = new File(myObj.getParent(), fileName);
+            Files.move(myObj.toPath(), newFile.toPath());
+            	LOGGER.info("File upload in progress.");
+    			uploadFileToS3Bucket(bucketName, myObj);
+    			LOGGER.info("File upload is completed.");
+    		
+            
+            logger.info("===================== uploading File  - Done! =====================");
+        } catch (AmazonServiceException ase) {
+        	logger.info("Caught an AmazonServiceException from GET requests, rejected reasons:");
+			logger.info("Error Message:    " + ase.getMessage());
+			logger.info("HTTP Status Code: " + ase.getStatusCode());
+			logger.info("AWS Error Code:   " + ase.getErrorCode());
+			logger.info("Error Type:       " + ase.getErrorType());
+			logger.info("Request ID:       " + ase.getRequestId());
+        } catch (AmazonClientException ace) {
+        	logger.info("Caught an AmazonClientException: ");
+            logger.info("Error Message: " + ace.getMessage());
+        } catch (IOException ioe) {
+        	logger.info("IOE Error Message: " + ioe.getMessage());
+		}
+	}
+	
+	//----------------------------------testing method
 		
 	@Async
     public void deleteFileFromS3Bucket(String fileName)

@@ -1,5 +1,6 @@
 package org.jcg.springboot.aws.s3.ctrl;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import java.util.Map;
@@ -67,16 +68,44 @@ public class AWSS3Ctrl {
 	        return modelAndView;
 	    }
 	  
+	  
 	  @GetMapping(value= "/download")
 	  public Map<String, String> downloadFile(@RequestParam("file_name") String fileName)
 	    {
-	        this.service.downloadFile(fileName);;
+	        this.service.downloadFile(fileName);
 		  	
 	        Map<String, String> response = new HashMap<>();
 	        response.put("message", "file [" + fileName + "]  downloaded successfully.");
 
 	        return response;
 	    }
+	  
+	  //---------------------------testing this function
+	  @RequestMapping(method = RequestMethod.GET, value = "/selectTempEdit")
+	    public ModelAndView selectTempEdit() {
+	        ModelAndView modelAndView = new ModelAndView();
+	        modelAndView.setViewName("/editSelectedFile");
+	        return modelAndView;
+	    }
+	  
+	  @RequestMapping(method = RequestMethod.GET, value = "/editDisplay")
+	    public ModelAndView edit(@RequestParam(value= "fileName") String fileName) throws IOException {
+	        ModelAndView modelAndView = new ModelAndView();
+	        modelAndView.addObject("fileName",fileName);
+	        String str = this.service.readFile(fileName);
+	        modelAndView.addObject("textEdit",str);
+	        modelAndView.setViewName("/codeEditor");
+	        return modelAndView;
+	    }
+	  
+	  @PostMapping(value= "/edit")
+		public ResponseEntity<String> editFile(@RequestParam(value= "textArea") String text) {
+		 
+		  this.service.editFile(text);
+			final String response = " edit successfully.";
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+	//---------------------------testing this function
 	  
 	  @PostMapping(value= "/createBucket")
 		public Map<String,String> create_Bucket() {

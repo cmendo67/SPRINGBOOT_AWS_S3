@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Editing Template</title>
+    </head>
+    <body>
+        <form action="/s3/edit" method="post">
+            <textarea id = "textArea" name="textArea">
+                {{textEdit}}
+            </textarea>
+            <input type="submit" value="Save">
+        </form>
+        
+    </body>
+</html>
