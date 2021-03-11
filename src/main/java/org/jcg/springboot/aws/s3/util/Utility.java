@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Utility {
-	static String displayTextValue = "";
+	public static String displayTextValue = "";
 	public static String displayText(InputStream input) throws IOException{
 		// Read one text line at a time and display.
         BufferedReader reader = new BufferedReader(new InputStreamReader(input));

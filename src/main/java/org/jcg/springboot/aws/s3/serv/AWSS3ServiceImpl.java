@@ -52,6 +52,7 @@ import io.netty.util.Constant;
 @Service
 public class AWSS3ServiceImpl implements AWSS3Service {
 	String fileDir = "/Users/Bryan/Workspace/Senior_Design/SPRINGBOOT_AWS_S3/src/main/resources/templates/test.pebble";
+	String s3fileName="";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
 	
@@ -100,20 +101,25 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		
 		Logger logger = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
 		try {
+			
 		      File myObj = new File(fileDir);
 		      if (myObj.createNewFile()) {
 			        System.out.println("File created: " + myObj.getName());
 			      } else {
 			        System.out.println("File already exists.");
 			      }
+
 		      FileWriter myWriter = new FileWriter(fileDir);
+		      myWriter.flush();
             System.out.println("Downloading an object");
             S3Object s3object = amazonS3.getObject(new GetObjectRequest(bucketName, keyName));
            
 //            System.out.println(Utility.getdisplayTextValue());
             System.out.println("Content-Type: "  + s3object.getObjectMetadata().getContentType());
+            
             Utility.displayText(s3object.getObjectContent());
             myWriter.write(Utility.displayText(s3object.getObjectContent()));
+            Utility.displayTextValue = "";
             logger.info("===================== Import File - Done! =====================");
             myWriter.close();
         } catch (AmazonServiceException ase) {
@@ -131,13 +137,16 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		}
 	}
 	
-	//-------------------------------------------testing method
+	//-------------------------------------------edit method
 	@Async
 	public String readFile(String fileName) throws IOException {
 		Logger logger = LoggerFactory.getLogger(AWSS3ServiceImpl.class);
 		
+			s3fileName= fileName;
+			downloadFile(fileName);
 			File myObj = new File(fileDir);
 			InputStream targetStream = new FileInputStream(myObj);
+			Utility.displayTextValue ="";
 			return Utility.displayText(targetStream);
 
 		
@@ -148,16 +157,22 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		try {
 		      
 		      FileWriter myWriter = new FileWriter(fileDir);
-		      String fileName = "test.pebble"; //---- change this get the temp name from filedir
+		      
+		      myWriter.flush();
 		      myWriter.write(text);
             logger.info("===================== rewriting File - Done! =====================");
+            
             myWriter.close();
             
             final File myObj = new File(fileDir);
-            File newFile = new File(myObj.getParent(), fileName);
-            Files.move(myObj.toPath(), newFile.toPath());
+ 
             	LOGGER.info("File upload in progress.");
-    			uploadFileToS3Bucket(bucketName, myObj);
+            	
+            	final String uniqueFileName = s3fileName;
+        		LOGGER.info("Uploading file with name= " + uniqueFileName);
+        		final PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, uniqueFileName, myObj);
+        		amazonS3.putObject(putObjectRequest);
+        		
     			LOGGER.info("File upload is completed.");
     		
             
@@ -177,7 +192,7 @@ public class AWSS3ServiceImpl implements AWSS3Service {
 		}
 	}
 	
-	//----------------------------------testing method
+	//----------------------------------edit method
 		
 	@Async
     public void deleteFileFromS3Bucket(String fileName)

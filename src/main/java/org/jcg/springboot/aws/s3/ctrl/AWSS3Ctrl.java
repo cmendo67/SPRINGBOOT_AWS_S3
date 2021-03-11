@@ -80,7 +80,7 @@ public class AWSS3Ctrl {
 	        return response;
 	    }
 	  
-	  //---------------------------testing this function
+	  //---------------------------edit  function
 	  @RequestMapping(method = RequestMethod.GET, value = "/selectTempEdit")
 	    public ModelAndView selectTempEdit() {
 	        ModelAndView modelAndView = new ModelAndView();
@@ -105,7 +105,7 @@ public class AWSS3Ctrl {
 			final String response = " edit successfully.";
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
-	//---------------------------testing this function
+	//---------------------------edit  function
 	  
 	  @PostMapping(value= "/createBucket")
 		public Map<String,String> create_Bucket() {
